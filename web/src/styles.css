@@ -30,3 +30,172 @@ td {
   padding: 0.5rem 0.75rem;
   text-align: left;
 }
+
+/* Capacity grid */
+
+.toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin: 0.75rem 0 1rem;
+}
+
+.toolbar .nav {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.range-label,
+.status,
+.summary {
+  font-variant-numeric: tabular-nums;
+}
+
+.range-label {
+  font-weight: 600;
+}
+
+.status {
+  opacity: 0.6;
+}
+
+.summary {
+  margin: 0 0 0.75rem;
+}
+
+.legend {
+  margin-left: 1rem;
+  opacity: 0.8;
+  font-size: 0.85rem;
+}
+
+.swatch {
+  display: inline-block;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin: 0 0.3rem 0 0.75rem;
+  vertical-align: -0.1rem;
+  border-radius: 2px;
+}
+
+.notice {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  background: color-mix(in srgb, currentColor 8%, transparent);
+}
+
+.notice.error,
+.row-error td {
+  background: color-mix(in srgb, #d92d20 14%, transparent);
+}
+
+.grid-scroll {
+  overflow: auto;
+  max-height: 75vh;
+}
+
+.grid-scroll table {
+  transition: opacity 0.15s;
+}
+
+table.stale {
+  opacity: 0.55;
+}
+
+thead th {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+  background: Canvas;
+  white-space: nowrap;
+}
+
+th.person {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background: Canvas;
+  white-space: nowrap;
+  font-weight: 500;
+}
+
+thead th.person {
+  z-index: 3;
+}
+
+.cell {
+  text-align: right;
+  white-space: nowrap;
+  min-width: 4.5rem;
+}
+
+.cell.empty {
+  opacity: 0.4;
+}
+
+.cell.under,
+.swatch.under {
+  background: color-mix(in srgb, #2e90fa 10%, transparent);
+}
+
+.cell.full,
+.swatch.full {
+  background: color-mix(in srgb, #12b76a 18%, transparent);
+}
+
+.cell.over,
+.swatch.over {
+  background: color-mix(in srgb, #d92d20 30%, transparent);
+  font-weight: 700;
+}
+
+.excess {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.capacity-col {
+  white-space: nowrap;
+}
+
+button.edit {
+  min-width: 4rem;
+  text-align: left;
+  font-variant-numeric: tabular-nums;
+}
+
+.saving {
+  opacity: 0.6;
+  font-size: 0.8rem;
+}
+
+.editor {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.editor input {
+  width: 4.5rem;
+}
+
+.field-error {
+  color: #d92d20;
+  font-size: 0.8rem;
+}
+
+.skeleton .bone {
+  display: block;
+  width: 3.5rem;
+  height: 0.8rem;
+  border-radius: 4px;
+  background: color-mix(in srgb, currentColor 12%, transparent);
+  animation: pulse 1.2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  50% {
+    opacity: 0.4;
+  }
+}
