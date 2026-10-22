@@ -51,3 +51,12 @@ left unfinished. Append as you go; a line or two per entry is right.
 - **`staleTime` moved onto the capacity query** (30 s) so it sits next to the reason; it was a
   QueryClient default that was easy to miss. It doesn't stop rapid clicks through new weeks
   from requesting each one; aborting the abandoned requests does that.
+- **Looked at the grid as an outsider would and it didn't explain itself.** "+15h" next to
+  Eli's 20h read as "15 hours added", not "15 over". "Weekly hours" didn't say capacity,
+  and nothing said weekends are left out. Cells now read "20 / 5h" with "15h over" under
+  them, the column is "Capacity / week", headers say "Week of", one line above the table
+  says what a cell is, and the editor says the change applies to every week, past ones
+  included (the schema keeps one number). Saves now show "Saved" briefly.
+- **Opening the editor shifted the whole table sideways**: the inline input, buttons and hint
+  were wider than the "40h" button, so the column resized. The editor now floats over the
+  cell and the column has a fixed minimum width that also fits "saving…".
