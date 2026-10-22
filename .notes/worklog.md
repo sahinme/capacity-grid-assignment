@@ -60,3 +60,10 @@ left unfinished. Append as you go; a line or two per entry is right.
 - **Opening the editor shifted the whole table sideways**: the inline input, buttons and hint
   were wider than the "40h" button, so the column resized. The editor now floats over the
   cell and the column has a fixed minimum width that also fits "saving…".
+- **Cross-checked the API query against an independent day-by-day calculation** from the
+  seed rows, for all 500 people × 83 weeks (2025-06-02 to 2027-01-03): 0 mismatches.
+- **Correction to an earlier entry:** the 12% / 35% over-capacity figures are of *booked*
+  person-weeks (13,741). Of all 41,500 person-weeks it's 3.9% (Mon–Fri) vs 11.5% (all days).
+- **The duplicate rows have a fixed shape:** every allocation (8,413 of them) is exactly 15
+  rows, one at value m and fourteen at m/2, so the rows sum to 8m. Reading the largest row as
+  a fraction of an 8h day gives the same totals as summing, so the numbers hold either way.

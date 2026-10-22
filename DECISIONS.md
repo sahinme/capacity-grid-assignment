@@ -19,16 +19,16 @@ it, we want to know you saw it.
 
 - Eli has 0 capacity but 20h booked
 - Holidays. Jan 1 counts as a working day, because the data has no holidays.
-- Full-time people showed as over capacity. With all 7 days counted
+- Full-time people showed as over capacity in case counting all 7 days with weekends.
 
 
 ## What did the AI get wrong that you caught?
 
 One concrete example. Every real session has one.
 
-- Missing optimistic update 
+- Missing optimistic - Failed-save message after the optimistic rollback 
 - 26-week cap. The AI first proposed a 26-week cap. I noticed it contradicted the brief’s “two years of history” and that Toggl’s own reports allow two years, so the cap became two years.
-- An assumption presented as a rule. The AI presented “weekdays only” as a given rather than an assumption. When I challenged it, it was checked against the data (Ana 40 vs 56, 12% vs 35%).
+- An assumption presented as a rule. The AI presented “weekdays only” as a given rather than an assumption. When I challenged it we reviewed the data and best practices.
 - UI issues. Verbose error messages, the misleading “+15h” label, and the table shifting sideways when the editor opened. I've caught all three by looking at the screen.
 
 ## What would you do differently with a week?
