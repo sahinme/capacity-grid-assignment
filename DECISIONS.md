@@ -27,9 +27,9 @@ it, we want to know you saw it.
 One concrete example. Every real session has one.
 
 - Missing optimistic update 
-- 26-week cap. The AI first proposed a 26-week cap. You noticed it contradicted the brief’s “two years of history” and that Toggl’s own reports allow two years, so the cap became two years.
-- An assumption presented as a rule. The AI presented “weekdays only” as a given rather than an assumption. When you challenged it, it was checked against the data (Ana 40 vs 56, 12% vs 35%).
-- UI issues. Verbose error messages, the misleading “+15h” label, and the table shifting sideways when the editor opened. You caught all three by looking at the screen.
+- 26-week cap. The AI first proposed a 26-week cap. I noticed it contradicted the brief’s “two years of history” and that Toggl’s own reports allow two years, so the cap became two years.
+- An assumption presented as a rule. The AI presented “weekdays only” as a given rather than an assumption. When I challenged it, it was checked against the data (Ana 40 vs 56, 12% vs 35%).
+- UI issues. Verbose error messages, the misleading “+15h” label, and the table shifting sideways when the editor opened. I've caught all three by looking at the screen.
 
 ## What would you do differently with a week?
 
