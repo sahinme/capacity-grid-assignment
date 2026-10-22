@@ -47,10 +47,10 @@ describe('editing weekly hours', () => {
     let answer: (res: Response) => void = () => {}
     renderGrid(() => new Promise((resolve) => (answer = resolve)))
 
-    expect(await screen.findByText('+5h')).toBeInTheDocument() // 45h against 40h
+    expect(await screen.findByText('5h over')).toBeInTheDocument() // 45h against 40h
     await editWeeklyHours('50')
 
-    await waitFor(() => expect(screen.queryByText('+5h')).not.toBeInTheDocument())
+    await waitFor(() => expect(screen.queryByText('5h over')).not.toBeInTheDocument())
     expect(screen.getByText(/saving/)).toBeInTheDocument()
 
     grid.people[0].weeklyHours = 50
@@ -67,7 +67,7 @@ describe('editing weekly hours', () => {
     const alert = await screen.findByRole('alert')
     expect(alert).toHaveTextContent("Couldn't save 50h (server error). Still 40h.")
     expect(screen.getByRole('button', { name: /currently 40h/ })).toBeInTheDocument()
-    expect(screen.getByText('+5h')).toBeInTheDocument()
+    expect(screen.getByText('5h over')).toBeInTheDocument()
     expect(within(alert).getByRole('button', { name: 'Retry' })).toBeInTheDocument()
   })
 })

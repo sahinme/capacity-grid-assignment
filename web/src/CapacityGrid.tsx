@@ -1,4 +1,4 @@
-import { memo, useMemo, useState, type FormEvent, type KeyboardEvent } from 'react'
+import { memo, useEffect, useMemo, useState, type FormEvent, type KeyboardEvent } from 'react'
 import { keepPreviousData, useQuery } from '@tanstack/react-query'
 import { capacityKeys, fetchCapacity, type PersonCapacity } from './api'
 import {
@@ -6,6 +6,7 @@ import {
   addDays,
   cellStatus,
   formatHours,
+  formatNumber,
   mondayOf,
   sundayOf,
   today,
@@ -142,16 +143,22 @@ export function CapacityGrid({ from, to }: Props) {
               </button>
             </p>
           )}
-          <p className="summary">
-            {overCount === 0
-              ? 'Nobody is over capacity in this range.'
-              : `${overCount} of ${data.people.length} people are over capacity in at least one week.`}{' '}
-            <span className="legend">
-              <span className="swatch over" /> over capacity
-              <span className="swatch full" /> at capacity
-              <span className="swatch under" /> under
-            </span>
-          </p>
+          <div className="summary">
+            <p>
+              <strong>
+                {overCount === 0
+                  ? 'Nobody is over capacity'
+                  : `${overCount} of ${data.people.length} people are over capacity`}
+              </strong>{' '}
+              in this range. Each cell is the hours booked Monday–Friday against the person's weekly
+              capacity.
+            </p>
+            <p className="legend">
+              <span className="swatch over" /> Over capacity
+              <span className="swatch full" /> Full
+              <span className="swatch under" /> Has room
+            </p>
+          </div>
           <div className="grid-scroll">
             <table aria-busy={query.isFetching} className={showingOldRange ? 'stale' : undefined}>
               <thead>
@@ -160,10 +167,11 @@ export function CapacityGrid({ from, to }: Props) {
                     Person
                   </th>
                   <th scope="col" className="capacity-col">
-                    Weekly hours
+                    Capacity / week
                   </th>
                   {data.weeks.map((week) => (
-                    <th scope="col" key={week} title={`Week of ${week}`}>
+                    <th scope="col" key={week} className="week" title={`Week of ${week}, Monday to Sunday`}>
+                      <span className="week-of">Week of</span>
                       {dayMonth.format(asDate(week))}
                     </th>
                   ))}
@@ -194,6 +202,14 @@ const PersonRow = memo(function PersonRow({ person, weeks, editable }: RowProps)
   const save = useUpdateWeeklyHours(person.id)
   const [editing, setEditing] = useState(false)
 
+  // "Saved" shows for a moment, then the row goes back to normal.
+  const { isSuccess, reset } = save
+  useEffect(() => {
+    if (!isSuccess) return
+    const timer = setTimeout(reset, 2000)
+    return () => clearTimeout(timer)
+  }, [isSuccess, reset])
+
   return (
     <>
       <tr>
@@ -201,7 +217,25 @@ const PersonRow = memo(function PersonRow({ person, weeks, editable }: RowProps)
           {person.name}
         </th>
         <td className="capacity-col">
-          {editing ? (
+          {/* The button stays in place while editing and the editor floats
+              over it, so opening it doesn't resize the column or the row. */}
+          <button
+            type="button"
+            className="edit"
+            // One save per person at a time keeps responses in order.
+            disabled={!editable || save.isPending || editing}
+            onClick={() => {
+              save.reset()
+              setEditing(true)
+            }}
+            aria-label={`Edit weekly hours for ${person.name}, currently ${formatHours(person.weeklyHours)}`}
+          >
+            {formatHours(person.weeklyHours)}
+            <span className="pencil" aria-hidden="true">
+              ✎
+            </span>
+          </button>
+          {editing && (
             <CapacityEditor
               name={person.name}
               initial={person.weeklyHours}
@@ -213,21 +247,12 @@ const PersonRow = memo(function PersonRow({ person, weeks, editable }: RowProps)
                 }
               }}
             />
-          ) : (
-            <button
-              type="button"
-              className="edit"
-              // One save per person at a time keeps responses in order.
-              disabled={!editable || save.isPending}
-              onClick={() => {
-                save.reset()
-                setEditing(true)
-              }}
-              aria-label={`Edit weekly hours for ${person.name}, currently ${formatHours(person.weeklyHours)}`}
-            >
-              {formatHours(person.weeklyHours)}
-              {save.isPending && <span className="saving"> saving…</span>}
-            </button>
+          )}
+          {save.isPending && <span className="row-status">saving…</span>}
+          {save.isSuccess && (
+            <span className="row-status saved" role="status">
+              Saved
+            </span>
           )}
         </td>
         {person.allocated.map((hours, i) => {
@@ -238,8 +263,17 @@ const PersonRow = memo(function PersonRow({ person, weeks, editable }: RowProps)
               className={`cell ${status}`}
               title={`${formatHours(hours)} allocated of ${formatHours(person.weeklyHours)}, week of ${weeks[i]}`}
             >
-              {status === 'empty' ? '–' : formatHours(hours)}
-              {status === 'over' && <span className="excess"> +{formatHours(hours - person.weeklyHours)}</span>}
+              {status === 'empty' ? (
+                '–'
+              ) : (
+                <>
+                  <span className="booked">{formatNumber(hours)}</span>
+                  <span className="of"> / {formatHours(person.weeklyHours)}</span>
+                  {status === 'over' && (
+                    <span className="excess">{formatHours(hours - person.weeklyHours)} over</span>
+                  )}
+                </>
+              )}
             </td>
           )
         })}
@@ -304,6 +338,7 @@ function CapacityEditor({ name, initial, onSave, onCancel }: EditorProps) {
         Cancel
       </button>
       {!valid && <span className="field-error">0–{MAX_WEEKLY_HOURS}</span>}
+      <span className="hint">Applies to every week, past ones too.</span>
     </form>
   )
 }

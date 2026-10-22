@@ -75,6 +75,10 @@ export function withWeeklyHours(
   }
 }
 
+export function formatNumber(hours: number): string {
+  return String(Number(hours.toFixed(2)))
+}
+
 export function formatHours(hours: number): string {
-  return `${Number(hours.toFixed(2))}h`
+  return `${formatNumber(hours)}h`
 }
